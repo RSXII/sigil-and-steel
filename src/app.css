@@ -1,0 +1,186 @@
+/* ===== CSS Custom Properties ===== */
+:root {
+  --color-bg: #1a1614;
+  --color-bg-alt: #201c1a;
+  --color-bg-hover: #2a2422;
+  --color-border: #3a322e;
+  --color-gold: #c9a84c;
+  --color-gold-dim: #9a7a34;
+  --color-crimson: #8a3030;
+  --color-text: #e8ddd0;
+  --color-text-dim: #a89880;
+  --color-muted: #7a6a5a;
+  --color-success: #4a7c4a;
+  --color-error: #8a3030;
+  --color-info: #2e5a7c;
+
+  /* Aliases used by components */
+  --color-surface: var(--color-bg-alt);
+  --color-surface-hover: var(--color-bg-hover);
+  --color-surface-active: #2e2622;
+  --color-text-muted: var(--color-muted);
+
+  --font-heading: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --font-body: "Georgia", serif;
+
+  --radius: 4px;
+  --transition: 150ms ease;
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+}
+
+/* ===== Reset & Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ===== Typography ===== */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+p {
+  line-height: 1.65;
+}
+
+/* ===== Form Elements ===== */
+input[type="text"],
+input[type="number"],
+textarea,
+select {
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  width: 100%;
+  transition: border-color var(--transition);
+  appearance: none;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-gold-dim);
+}
+
+textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a7a34' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  padding-right: 2rem;
+  cursor: pointer;
+}
+
+label {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  margin-bottom: 0.35rem;
+}
+
+/* ===== Buttons ===== */
+button {
+  font-family: var(--font-heading);
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: none;
+  border-radius: var(--radius);
+  padding: 0.5rem 1rem;
+  transition:
+    background var(--transition),
+    color var(--transition),
+    opacity var(--transition);
+}
+
+button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--color-gold);
+  color: #1a1614;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: #dfc060;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--color-text-dim);
+  border: 1px solid var(--color-border);
+}
+
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-bg-hover);
+  color: var(--color-text);
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--color-crimson);
+  border: 1px solid transparent;
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(138, 48, 48, 0.15);
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-alt);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted);
+}

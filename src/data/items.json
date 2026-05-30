@@ -1,0 +1,114 @@
+{
+  "vendors": [
+    {
+      "id": "thornwall-smithy",
+      "name": "Thornwall Smithy",
+      "description": "Master Aldric's forge. Finest steel in the region.",
+      "type": "standard",
+      "categories": [
+        {
+          "name": "Weapons",
+          "items": [
+            {
+              "id": "longsword",
+              "name": "Longsword",
+              "price": 15,
+              "unit": "gp",
+              "description": "Versatile martial weapon. 1d8 slashing."
+            },
+            {
+              "id": "shortsword",
+              "name": "Shortsword",
+              "price": 10,
+              "unit": "gp",
+              "description": "Finesse, light. 1d6 piercing."
+            }
+          ]
+        },
+        {
+          "name": "Armor",
+          "items": [
+            {
+              "id": "leather-armor",
+              "name": "Leather Armor",
+              "price": 10,
+              "unit": "gp",
+              "description": "AC 11 + Dex modifier."
+            },
+            {
+              "id": "shield",
+              "name": "Shield",
+              "price": 10,
+              "unit": "gp",
+              "description": "+2 AC. Requires one free hand."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-verdant-root",
+      "name": "The Verdant Root",
+      "description": "Mariselle's apothecary. Herbs, remedies, and curiosities.",
+      "type": "standard",
+      "categories": [
+        {
+          "name": "Potions",
+          "items": [
+            {
+              "id": "potion-healing",
+              "name": "Potion of Healing",
+              "price": 50,
+              "unit": "gp",
+              "description": "Regain 2d4+2 HP."
+            },
+            {
+              "id": "antitoxin",
+              "name": "Antitoxin",
+              "price": 50,
+              "unit": "gp",
+              "description": "Advantage on saving throws vs. poison for 1 hour."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "the-grey-veil",
+      "name": "The Grey Veil",
+      "description": "Ask for Silas at the back of the Stumbling Crow after midnight.",
+      "type": "procurement",
+      "procurementNote": "Items sourced through the Grey Veil cost 20–40% less than market rate but require 1d4 days lead time. Availability is not guaranteed.",
+      "requestFields": [
+        {
+          "id": "item-description",
+          "label": "What are you looking for?",
+          "type": "textarea",
+          "placeholder": "Be specific. Type, enchantment level, any relevant details."
+        },
+        {
+          "id": "budget",
+          "label": "Your budget (in gp)",
+          "type": "text",
+          "placeholder": "e.g. 200 gp"
+        },
+        {
+          "id": "urgency",
+          "label": "How urgent?",
+          "type": "select",
+          "options": [
+            "No rush — take your time",
+            "Within a week",
+            "As fast as possible"
+          ]
+        },
+        {
+          "id": "notes",
+          "label": "Anything else Silas should know?",
+          "type": "textarea",
+          "placeholder": "Optional."
+        }
+      ]
+    }
+  ]
+}
