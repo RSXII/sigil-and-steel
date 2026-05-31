@@ -5,6 +5,23 @@
 
   export let vendorIndex: number;
 
+  // Discover available shopkeeper images at dev time via Vite's glob.
+  // Keys are like '/static/shopkeepers/foo.jpg'; we strip the prefix for the filename.
+  const _skGlob = import.meta.glob(
+    '/static/shopkeepers/*.{jpg,jpeg,png,gif,webp,mp4}',
+    { eager: false }
+  );
+  const availableImages: Array<{ filename: string; isVideo: boolean }> = Object.keys(_skGlob).map(
+    (path) => {
+      const filename = path.split('/').pop()!;
+      return { filename, isVideo: filename.toLowerCase().endsWith('.mp4') };
+    }
+  );
+
+  function selectShopkeeper(filename: string | undefined) {
+    patchTheme({ shopkeeperImage: filename });
+  }
+
   type Tab = 'info' | 'theme' | 'shopkeeper' | 'content';
   let activeTab: Tab = 'info';
 
@@ -74,11 +91,6 @@
   function setFieldType(fi: number, value: string) {
     patchField(fi, { type: value as ProcurementField['type'] });
   }
-
-  $: previewSrc = vendor?.theme?.shopkeeperImage
-    ? `/shopkeepers/${vendor.theme.shopkeeperImage}`
-    : null;
-  $: isVideo = previewSrc?.toLowerCase().endsWith('.mp4') ?? false;
 
   $: contentTabLabel = isStandard ? 'Inventory' : 'Fields';
   $: tabList = [
@@ -175,35 +187,49 @@
 
       <!-- ── SHOPKEEPER ── -->
       {#if activeTab === 'shopkeeper'}
-        <div class="field-group">
-          <label for="ve-img">Filename</label>
-          <input
-            id="ve-img"
-            type="text"
-            placeholder="e.g. aldric.jpg or silas.mp4"
-            value={vendor.theme?.shopkeeperImage ?? ''}
-            on:input={(e) =>
-              patchTheme({ shopkeeperImage: e.currentTarget.value || undefined })}
-          />
-          <p class="field-hint">
-            Place the file in <code>/static/shopkeepers/</code>. Supports jpg, png, gif, mp4.
-          </p>
+        <div class="sk-gallery">
+          <!-- None / clear option -->
+          <button
+            class="sk-thumb"
+            class:selected={!vendor.theme?.shopkeeperImage}
+            on:click={() => selectShopkeeper(undefined)}
+            title="No shopkeeper image"
+          >
+            <div class="sk-thumb-none"><span>⊘</span></div>
+            <span class="sk-thumb-name">None</span>
+          </button>
+
+          {#each availableImages as img}
+            <button
+              class="sk-thumb"
+              class:selected={vendor.theme?.shopkeeperImage === img.filename}
+              on:click={() => selectShopkeeper(img.filename)}
+              title={img.filename}
+            >
+              {#if img.isVideo}
+                <!-- svelte-ignore a11y-media-has-caption -->
+                <video src={`/shopkeepers/${img.filename}`} muted class="sk-thumb-media" />
+              {:else}
+                <img src={`/shopkeepers/${img.filename}`} alt={img.filename} class="sk-thumb-media" />
+              {/if}
+              <span class="sk-thumb-name">{img.filename.replace(/\.[^.]+$/, '')}</span>
+              {#if vendor.theme?.shopkeeperImage === img.filename}
+                <div class="sk-selected-badge">✓</div>
+              {/if}
+            </button>
+          {/each}
         </div>
 
-        <div class="sk-preview-area">
-          {#if previewSrc}
-            {#if isVideo}
-              <!-- svelte-ignore a11y-media-has-caption -->
-              <video src={previewSrc} autoplay loop muted playsinline class="sk-media" />
-            {:else}
-              <img src={previewSrc} alt="Shopkeeper preview" class="sk-media" />
-            {/if}
-          {:else}
-            <div class="sk-empty">
-              <span>No image set — enter a filename above</span>
-            </div>
-          {/if}
-        </div>
+        {#if availableImages.length === 0}
+          <p class="field-hint">
+            No images found. Add <code>.jpg</code>, <code>.png</code>, <code>.gif</code>, or
+            <code>.mp4</code> files to <code>/static/shopkeepers/</code> — the gallery refreshes automatically.
+          </p>
+        {:else}
+          <p class="field-hint">
+            Add new files to <code>/static/shopkeepers/</code> and the gallery updates on save.
+          </p>
+        {/if}
       {/if}
 
       <!-- ── CONTENT: Inventory or Fields ── -->
@@ -460,34 +486,85 @@
     font-style: italic;
   }
 
-  /* ── Shopkeeper tab ── */
-  .sk-preview-area {
+  /* ── Shopkeeper gallery ── */
+  .sk-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(108px, 1fr));
+    gap: 0.65rem;
+  }
+
+  .sk-thumb {
     display: flex;
-    justify-content: center;
-    padding: 0.5rem 0;
-  }
-
-  .sk-media {
-    max-width: 240px;
-    max-height: 360px;
-    width: 100%;
-    object-fit: cover;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem;
+    background: var(--color-bg);
     border: 2px solid var(--color-border);
-    border-radius: 3px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition:
+      border-color var(--transition),
+      background var(--transition);
+    position: relative;
+    text-align: center;
   }
 
-  .sk-empty {
-    width: 240px;
-    height: 300px;
-    border: 2px dashed var(--color-border);
+  .sk-thumb:hover {
+    border-color: var(--color-text-dim);
+    background: var(--color-bg-hover);
+  }
+
+  .sk-thumb.selected {
+    border-color: var(--color-gold);
+    background: rgba(201, 168, 76, 0.08);
+  }
+
+  .sk-thumb-media {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
     border-radius: 3px;
+    display: block;
+  }
+
+  .sk-thumb-none {
+    width: 100%;
+    aspect-ratio: 3 / 4;
     display: flex;
     align-items: center;
     justify-content: center;
+    background: var(--color-bg-alt);
+    border-radius: 3px;
+    font-size: 1.75rem;
     color: var(--color-muted);
-    font-size: 0.85rem;
-    text-align: center;
-    padding: 1rem;
+  }
+
+  .sk-thumb-name {
+    font-size: 0.7rem;
+    color: var(--color-text-dim);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
+    line-height: 1.3;
+  }
+
+  .sk-selected-badge {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 18px;
+    height: 18px;
+    background: var(--color-gold);
+    color: var(--color-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.68rem;
+    font-weight: bold;
+    line-height: 1;
   }
 
   /* ── Content/Fields tab ── */
