@@ -49,13 +49,15 @@
 
   .vendor-btn:hover {
     background: var(--color-surface-hover);
-    border-color: var(--color-gold);
+    border-color: var(--vendor-primary);
   }
 
   .vendor-btn.active {
     background: var(--color-surface-active);
-    border-color: var(--color-gold);
-    color: var(--color-gold);
+    border-color: var(--vendor-primary);
+    color: var(--vendor-primary);
+    box-shadow: inset 3px 0 0 var(--vendor-primary);
+    transition: background 0.15s, border-color 400ms ease, color 400ms ease, box-shadow 400ms ease;
   }
 
   .vendor-btn__name {

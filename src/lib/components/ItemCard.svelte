@@ -43,19 +43,20 @@
 
   .item-card:hover {
     background: var(--color-surface-hover);
-    border-color: var(--color-gold);
+    border-color: var(--vendor-primary);
     transform: translateY(-1px);
   }
 
   .item-card.flash {
-    background: var(--color-gold-dim);
-    border-color: var(--color-gold);
+    background: color-mix(in srgb, var(--vendor-primary) 20%, var(--color-bg-alt) 80%);
+    border-color: var(--vendor-primary);
   }
 
   .item-card__name {
     font-family: var(--font-heading);
     font-size: 1rem;
-    color: var(--color-gold);
+    color: var(--vendor-primary);
+    transition: color 400ms ease;
   }
 
   .item-card__desc {

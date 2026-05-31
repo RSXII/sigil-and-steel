@@ -23,6 +23,10 @@
   --font-heading: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
   --font-body: "Georgia", serif;
 
+  /* Vendor theme vars — overridden per active vendor via inline style */
+  --vendor-primary: var(--color-gold);
+  --vendor-secondary: var(--color-bg-alt);
+
   --radius: 4px;
   --transition: 150ms ease;
 

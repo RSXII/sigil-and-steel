@@ -11,12 +11,20 @@ export interface Category {
   items: ShopItem[];
 }
 
+export interface VendorTheme {
+  primaryColor: string;
+  secondaryColor: string;
+  shopkeeperImage?: string;
+}
+
 export interface StandardVendor {
   id: string;
   name: string;
   description: string;
   type: "standard";
   categories: Category[];
+  theme?: VendorTheme;
+  speeches?: string[];
 }
 
 export interface ProcurementField {
@@ -34,6 +42,8 @@ export interface ProcurementVendor {
   type: "procurement";
   procurementNote: string;
   requestFields: ProcurementField[];
+  theme?: VendorTheme;
+  speeches?: string[];
 }
 
 export type Vendor = StandardVendor | ProcurementVendor;
