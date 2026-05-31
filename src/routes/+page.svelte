@@ -162,7 +162,8 @@
   .main-col {
     padding: 1.5rem;
     overflow-y: auto;
-    background: var(--color-bg);
+    background: color-mix(in srgb, var(--vendor-secondary) 18%, var(--color-bg) 82%);
+    transition: background 400ms ease;
   }
 
   .char-name-bar {
@@ -172,17 +173,19 @@
     margin-bottom: 1.75rem;
     padding: 0.75rem 1rem;
     background: var(--color-bg-alt);
-    border: 1px solid var(--color-border);
+    border: 1px solid color-mix(in srgb, var(--vendor-primary) 25%, var(--color-border) 75%);
     border-radius: 4px;
+    transition: border-color 400ms ease;
   }
 
   .char-name-bar label {
     font-family: var(--font-heading);
-    color: var(--color-gold);
+    color: var(--vendor-primary);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.08em;
     white-space: nowrap;
+    transition: color 400ms ease;
   }
 
   .char-name-bar input {
