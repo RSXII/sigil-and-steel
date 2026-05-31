@@ -24,6 +24,7 @@ export interface StandardVendor {
   type: "standard";
   categories: Category[];
   theme?: VendorTheme;
+  speeches?: string[];
 }
 
 export interface ProcurementField {
@@ -42,6 +43,7 @@ export interface ProcurementVendor {
   procurementNote: string;
   requestFields: ProcurementField[];
   theme?: VendorTheme;
+  speeches?: string[];
 }
 
 export type Vendor = StandardVendor | ProcurementVendor;

@@ -22,7 +22,7 @@
     patchTheme({ shopkeeperImage: filename });
   }
 
-  type Tab = 'info' | 'theme' | 'shopkeeper' | 'content';
+  type Tab = 'info' | 'theme' | 'shopkeeper' | 'voice' | 'content';
   let activeTab: Tab = 'info';
 
   $: vendor = $vendors[vendorIndex];
@@ -92,11 +92,30 @@
     patchField(fi, { type: value as ProcurementField['type'] });
   }
 
+  function addSpeech() {
+    const existing = vendor.speeches ?? [];
+    if (existing.length >= 20) return;
+    patchVendor({ speeches: [...existing, ''] });
+  }
+
+  function removeSpeech(si: number) {
+    const lines = [...(vendor.speeches ?? [])];
+    lines.splice(si, 1);
+    patchVendor({ speeches: lines });
+  }
+
+  function patchSpeech(si: number, text: string) {
+    const lines = [...(vendor.speeches ?? [])];
+    lines[si] = text;
+    patchVendor({ speeches: lines });
+  }
+
   $: contentTabLabel = isStandard ? 'Inventory' : 'Fields';
   $: tabList = [
     ['info', 'Info'],
     ['theme', 'Theme'],
     ['shopkeeper', 'Shopkeeper'],
+    ['voice', 'Voice'],
     ['content', contentTabLabel],
   ] as [Tab, string][];
 </script>
@@ -230,6 +249,51 @@
             Add new files to <code>/static/shopkeepers/</code> and the gallery updates on save.
           </p>
         {/if}
+      {/if}
+
+      <!-- ── VOICE ── -->
+      {#if activeTab === 'voice'}
+        {@const speechLines = vendor.speeches ?? []}
+        <div class="field-group">
+          <p class="pseudo-label">
+            Speech Lines
+            <span class="hint-inline">({speechLines.length}/20)</span>
+          </p>
+          <p class="field-hint">
+            A random line is shown in the portrait panel whenever a player opens this vendor's tab.
+          </p>
+        </div>
+
+        {#each speechLines as line, si}
+          <div class="speech-row">
+            <textarea
+              rows="2"
+              class="speech-input"
+              value={line}
+              placeholder="What does the shopkeeper say…"
+              on:change={(e) => patchSpeech(si, e.currentTarget.value)}
+            />
+            <button
+              class="btn-danger icon-btn"
+              title="Delete line"
+              on:click={() => removeSpeech(si)}
+            >✕</button>
+          </div>
+        {/each}
+
+        {#if speechLines.length === 0}
+          <p class="field-hint" style="font-style: italic; margin-top: 0.25rem">
+            No lines yet — add some below.
+          </p>
+        {/if}
+
+        <button
+          class="btn-ghost"
+          on:click={addSpeech}
+          disabled={speechLines.length >= 20}
+        >
+          + Add Line{speechLines.length >= 20 ? ' (max 20)' : ''}
+        </button>
       {/if}
 
       <!-- ── CONTENT: Inventory or Fields ── -->
@@ -635,5 +699,19 @@
     padding: 0.2rem 0.45rem;
     font-size: 0.75rem;
     border: none;
+  }
+
+  /* ── Voice tab ── */
+  .speech-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .speech-input {
+    flex: 1;
+    resize: vertical;
+    min-height: 54px;
+    font-style: italic;
   }
 </style>

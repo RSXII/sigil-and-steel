@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { fade } from "svelte/transition";
+  import { fade, fly } from "svelte/transition";
   import type { Vendor } from "$lib/types";
 
   export let vendor: Vendor;
@@ -11,6 +11,16 @@
     ? `/shopkeepers/${theme.shopkeeperImage}`
     : null;
   $: isVideo = imagePath?.toLowerCase().endsWith(".mp4") ?? false;
+
+  // Pick a random speech line each time the active vendor changes.
+  // Using a guard variable so admin edits to speeches don't re-roll.
+  let currentSpeech: string | null = null;
+  let _lastSpeechId: string | undefined;
+  $: if (vendor?.id !== _lastSpeechId) {
+    _lastSpeechId = vendor?.id;
+    const lines = vendor?.speeches ?? [];
+    currentSpeech = lines.length ? lines[Math.floor(Math.random() * lines.length)] : null;
+  }
 </script>
 
 {#key vendor?.id}
@@ -19,6 +29,12 @@
     transition:fade={{ duration: 250 }}
     style="--p-primary: {primaryColor}; --p-secondary: {secondaryColor}"
   >
+    {#if currentSpeech}
+      <div class="speech-bubble" in:fly={{ y: -6, duration: 300, delay: 220 }}>
+        <p class="speech-text">"{currentSpeech}"</p>
+      </div>
+    {/if}
+
     <div class="portrait-frame">
       <div class="portrait-media-area">
         {#if imagePath}
@@ -139,5 +155,52 @@
     color: var(--p-primary);
     letter-spacing: 0.1em;
     text-transform: uppercase;
+  }
+
+  /* ── Speech bubble ── */
+  .speech-bubble {
+    position: relative;
+    width: 100%;
+    max-width: 200px;
+    background: color-mix(in srgb, var(--p-secondary) 85%, var(--p-primary) 15%);
+    border: 1px solid color-mix(in srgb, var(--p-primary) 45%, transparent);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    margin-bottom: 0.85rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 9px solid transparent;
+    border-right: 9px solid transparent;
+    border-top: 9px solid color-mix(in srgb, var(--p-secondary) 85%, var(--p-primary) 15%);
+  }
+
+  /* Faint border triangle underneath to match the bubble border */
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -11px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid color-mix(in srgb, var(--p-primary) 45%, transparent);
+    z-index: -1;
+  }
+
+  .speech-text {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: 0.8rem;
+    font-style: italic;
+    color: color-mix(in srgb, var(--p-primary) 80%, var(--color-text) 20%);
+    line-height: 1.55;
+    text-align: center;
   }
 </style>

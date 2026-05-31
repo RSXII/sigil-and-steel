@@ -9,6 +9,7 @@
         "primaryColor": "#c07840",
         "secondaryColor": "#1f1510"
       },
+      "speeches": [],
       "categories": [
         {
           "name": "Weapons",
@@ -59,6 +60,7 @@
         "primaryColor": "#4a8c5c",
         "secondaryColor": "#111a14"
       },
+      "speeches": [],
       "categories": [
         {
           "name": "Potions",
@@ -90,6 +92,7 @@
         "primaryColor": "#7a6a9a",
         "secondaryColor": "#141219"
       },
+      "speeches": [],
       "procurementNote": "Items sourced through the Grey Veil cost 20–40% less than market rate but require 1d4 days lead time. Availability is not guaranteed.",
       "requestFields": [
         {
