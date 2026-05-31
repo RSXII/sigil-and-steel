@@ -10,9 +10,8 @@ export default {
       fallback: "404.html",
     }),
     paths: {
-      // Set this to your GitHub repo name if deploying to a subdirectory
-      // e.g. base: '/sigil-and-steel'
-      // Leave empty if deploying to a custom domain or root
+      // BASE_PATH is set to '/sigil-and-steel' in CI for GitHub Pages deployment.
+      // Leave empty for local dev or custom domain.
       base: process.env.BASE_PATH || "",
     },
   },
