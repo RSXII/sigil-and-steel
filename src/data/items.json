@@ -5,6 +5,10 @@
       "name": "Thornwall Smithy",
       "description": "Master Aldric's forge. Finest steel in the region.",
       "type": "standard",
+      "theme": {
+        "primaryColor": "#c07840",
+        "secondaryColor": "#1f1510"
+      },
       "categories": [
         {
           "name": "Weapons",
@@ -51,6 +55,10 @@
       "name": "The Verdant Root",
       "description": "Mariselle's apothecary. Herbs, remedies, and curiosities.",
       "type": "standard",
+      "theme": {
+        "primaryColor": "#4a8c5c",
+        "secondaryColor": "#111a14"
+      },
       "categories": [
         {
           "name": "Potions",
@@ -78,6 +86,10 @@
       "name": "The Grey Veil",
       "description": "Ask for Silas at the back of the Stumbling Crow after midnight.",
       "type": "procurement",
+      "theme": {
+        "primaryColor": "#7a6a9a",
+        "secondaryColor": "#141219"
+      },
       "procurementNote": "Items sourced through the Grey Veil cost 20–40% less than market rate but require 1d4 days lead time. Availability is not guaranteed.",
       "requestFields": [
         {
